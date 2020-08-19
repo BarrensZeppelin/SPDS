@@ -17,7 +17,7 @@
 	</modules>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<sootVersion>4.0.0</sootVersion>
+		<sootVersion>4.3.0-SNAPSHOT</sootVersion>
 	</properties>
 	<build>
 		<plugins>
@@ -45,6 +45,13 @@
 		</plugins>
 	</build>
 	<repositories>
+		<repository>
+			<id>sonatype-snapshots</id>
+			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
+			<releases>
+				<enabled>false</enabled>
+			</releases>
+		</repository>
 		<repository>
 			<id>soot-snapshot</id>
 			<name>soot snapshot</name>

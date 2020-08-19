@@ -11,6 +11,7 @@
  *******************************************************************************/
 package test.core.selfrunning;
 
+import org.apache.log4j.BasicConfigurator;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
@@ -79,6 +80,7 @@ public abstract class AbstractTestingFramework {
 
     @SuppressWarnings("static-access")
     private void initializeSootWithEntryPoint() {
+        BasicConfigurator.configure();
         G.v().reset();
         Options.v().set_whole_program(true);
 

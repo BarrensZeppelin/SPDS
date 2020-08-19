@@ -43,6 +43,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.*;
 import java.util.Map.Entry;
+import java.util.concurrent.TimeUnit;
 
 public class IDEVizDebugger<W extends Weight> extends Debugger<W> {
 
@@ -115,7 +116,7 @@ public class IDEVizDebugger<W extends Weight> extends Debugger<W> {
             eventualData.add(queryJSON);
         }
         ;
-        logger.info("Computing visualization took: {}", watch.elapsed());
+        logger.info("Computing visualization took: {}", watch.elapsed(TimeUnit.MILLISECONDS));
         try (FileWriter file = new FileWriter(ideVizFile)) {
             logger.info("Writing visualization to file {}", ideVizFile.getAbsolutePath());
             file.write(eventualData.toJSONString());

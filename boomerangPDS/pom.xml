@@ -16,7 +16,7 @@
 				<artifactId>maven-surefire-plugin</artifactId>
 				<version>2.21.0</version>
 				<configuration>
-					<argLine>-Xmx8G -Xss128m</argLine>
+					<argLine>-Xmx5G -Xss128m</argLine>
 					<reportsDirectory>../shippable/testresults/boomerangPDS</reportsDirectory>
 				</configuration>
 			</plugin>
@@ -47,9 +47,10 @@
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<version>4.12</version>
+			<scope>test</scope>
 		</dependency>
 		<dependency>
-			<groupId>ca.mcgill.sable</groupId>
+			<groupId>org.soot-oss</groupId>
 			<artifactId>soot</artifactId>
 			<version>${sootVersion}</version>
 		</dependency>
@@ -67,18 +68,18 @@
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-lang3</artifactId>
 			<version>3.5</version>
-		</dependency>	
+		</dependency>
 		<dependency>
-		    <groupId>org.slf4j</groupId>
-		    <artifactId>slf4j-api</artifactId>
-		    <version>1.7.28</version>
-		</dependency>		
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>1.7.28</version>
+		</dependency>
 		<dependency>
-		    <groupId>org.slf4j</groupId>
-		    <artifactId>slf4j-log4j12</artifactId>
-		    <version>1.7.28</version>
-		    <scope>test</scope>
-		</dependency>	
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-log4j12</artifactId>
+			<version>1.7.28</version>
+			<scope>test</scope>
+		</dependency>
 	</dependencies>
 
 	<profiles>
@@ -96,6 +97,7 @@
 						<configuration>
 							<excludes>
 								<exclude>**/*LongTest.java</exclude>
+								<exclude>**/threading/*.java</exclude>
 							</excludes>
 						</configuration>
 					</plugin>

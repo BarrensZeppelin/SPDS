@@ -33,18 +33,7 @@ import boomerang.solver.ForwardBoomerangSolver;
 import heros.DontSynchronize;
 import heros.SynchronizedBy;
 import heros.solver.IDESolver;
-import soot.ArrayType;
-import soot.Body;
-import soot.Kind;
-import soot.MethodOrMethodContext;
-import soot.PatchingChain;
-import soot.RefType;
-import soot.Scene;
-import soot.SootClass;
-import soot.SootMethod;
-import soot.Type;
-import soot.Unit;
-import soot.Value;
+import soot.*;
 import soot.jimple.InstanceInvokeExpr;
 import soot.jimple.InvokeExpr;
 import soot.jimple.SpecialInvokeExpr;
@@ -340,27 +329,10 @@ public class ObservableDynamicICFG implements ObservableICFG<Unit, SootMethod> {
     }
 
     private Collection<SootMethod> getMethodFromClassOrFromSuperclass(SootMethod method, SootClass sootClass) {
-        Set<SootMethod> res = Sets.newHashSet();
-        SootClass originalClass = sootClass;
-        while (sootClass != null) {
-
-            for (SootMethod candidate : sootClass.getMethods()) {
-                if (candidate.getSubSignature().equals(method.getSubSignature())) {
-                    res.add(candidate);
-                }
-
-            }
-            handlingForThreading(method, sootClass, res);
-            if (!res.isEmpty())
-                return res;
-            if (sootClass.hasSuperclass()) {
-                sootClass = sootClass.getSuperclass();
-            } else {
-                logger.error("Did not find method {} for class {}", method, originalClass);
-                return res;
-            }
-        }
-        logger.error("Did not find method {} for class {}", method, originalClass);
+        Set<SootMethod> methods = Scene.v().getFastHierarchy().resolveAbstractDispatch(sootClass, method);
+        if(methods.isEmpty()) logger.error("Did not find method {} for class {}", method, sootClass);
+        Set<SootMethod> res = new HashSet<>(methods);
+        methods.forEach(mthd -> handlingForThreading(mthd, mthd.getDeclaringClass(), res));
         return res;
     }
 
