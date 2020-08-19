@@ -53,11 +53,11 @@
             <artifactId>junit</artifactId>
             <version>4.12</version>
         </dependency>
-        <dependency>
-            <groupId>ca.mcgill.sable</groupId>
-            <artifactId>soot</artifactId>
-            <version>${sootVersion}</version>
-        </dependency>
+		<dependency>
+			<groupId>org.soot-oss</groupId>
+			<artifactId>soot</artifactId>
+			<version>${sootVersion}</version>
+		</dependency>
         <dependency>
             <groupId>de.fraunhofer.iem</groupId>
             <artifactId>synchronizedPDS</artifactId>
