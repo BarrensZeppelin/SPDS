@@ -1,10 +1,36 @@
+[![Java CI with Maven](https://github.com/CodeShield-Security/SPDS/workflows/Java%20CI%20with%20Maven/badge.svg?branch=master)](https://github.com/CodeShield-Security/SPDS/actions)
 
 # WPDS
 
-[![Build Status](https://soot-build.cs.uni-paderborn.de/jenkins/buildStatus/icon?job=boomerang%2FWPDS-Multibranch%2Fmaster)](https://soot-build.cs.uni-paderborn.de/jenkins/job/boomerang/job/WPDS-Multibranch/job/master/)
-
 This repository contains a Java implementation of Weighted Pushdown Systems.
 Additionally, it contains an implementation of [Boomerang](boomerangPDS) and [IDEal](idealPDS) based on a Weighted Pushdown System.
+
+# Use as Maven dependency
+
+All projects inside this repository are pushed to GitHub's Maven repository for every release.
+
+To include a dependency from this repository to your poject, you first have to add the repository to your pom file:
+
+
+```.xml
+<dependencies>
+  <dependency>
+    <groupId>de.fraunhofer.iem</groupId>
+    <artifactId>WPDS</artifactId>
+    <version>3.0.8</version>
+  </dependency>
+</dependencies>
+<repositories>
+  <repository>
+      <id>github</id>
+      <url>https://maven.pkg.github.com/CodeShield-Security/SPDS/</url>
+  </repository>
+</repositories>	
+```
+
+To access the GitHub packages repository, you also need to set up GitHub credentials in your Maven's `settings.xml` file. Therefore, you need to add a `server` block with the id `github`, your username and an access token that has `package:read` rights to your `setting.xml`.
+An in-depth documentation on how to do this can be found [here](https://docs.github.com/en/packages/using-github-packages-with-your-projects-ecosystem/configuring-apache-maven-for-use-with-github-packages#authenticating-to-github-packages). 
+
 
 # Checkout, Build and Install
 
@@ -17,19 +43,6 @@ in the root directory of this git repository. If you do not want to skip the tes
 # Examples
 
 Boomerang code examples can be found [here](https://github.com/CROSSINGTUD/WPDS/blob/master/boomerangPDS/src/main/java/boomerang/example/ExampleMain.java). Code examples for IDEal are given [here](https://github.com/CROSSINGTUD/WPDS/tree/master/idealPDS/src/main/java/inference/example).
-
-# Visualization
-
-It is possible to visualize the results of a Boomerang or IDEal analysis interactively within the browser as shown below.
-
-![Visualization](https://github.com/CROSSINGTUD/WPDS/blob/master/boomerangPDS/visualization/example2.png)
-
-The visualization is readily setup on the test cases, but disabled by default. To explore its functionality do:
-
-1. Enable the [visualization flag](https://github.com/CROSSINGTUD/WPDS/blob/6ce1e84a9736d59b077478f3f17227d461ba3a51/boomerangPDS/src/test/java/test/core/AbstractBoomerangTest.java#L82) and execute some test cases. 
-2. Find the `.json` file for the executed test method below the folder `target/IDEViz/<fullyQualifiedClassNameOfTest>/`. 
-3. Open the [index.html](https://github.com/CROSSINGTUD/WPDS/tree/master/boomerangPDS/visualization) in a browser (tested with Chrome).
-4. Drop any of the .json files in the lower right box "Drop IDEViz File here" and start browsing the exploded supergraph interactively.
 
 
 # Notes on the Test Cases

@@ -1,68 +1,105 @@
-/*******************************************************************************
- * Copyright (c) 2018 Fraunhofer IEM, Paderborn, Germany.
- * This program and the accompanying materials are made available under the
- * terms of the Eclipse Public License 2.0 which is available at
+/**
+ * ***************************************************************************** Copyright (c) 2018
+ * Fraunhofer IEM, Paderborn, Germany. This program and the accompanying materials are made
+ * available under the terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
- *  
- * SPDX-License-Identifier: EPL-2.0
  *
- * Contributors:
- *     Johannes Spaeth - initial API and implementation
- *******************************************************************************/
+ * <p>SPDX-License-Identifier: EPL-2.0
+ *
+ * <p>Contributors: Johannes Spaeth - initial API and implementation
+ * *****************************************************************************
+ */
 package boomerang;
 
-import com.google.common.base.Optional;
-
+import boomerang.callgraph.BoomerangResolver;
+import boomerang.callgraph.ICallerCalleeResolutionStrategy.Factory;
 import boomerang.callgraph.ObservableICFG;
-import boomerang.jimple.AllocVal;
-import boomerang.jimple.Val;
+import boomerang.scene.AllocVal;
+import boomerang.scene.Method;
+import boomerang.scene.Statement;
+import boomerang.scene.Val;
 import boomerang.stats.IBoomerangStats;
-import soot.SootMethod;
-import soot.Unit;
-import soot.Value;
-import soot.jimple.Stmt;
+import java.util.Optional;
 
 public interface BoomerangOptions {
 
-    public boolean staticFlows();
+  default Factory getResolutionStrategy() {
+    return BoomerangResolver.FACTORY;
+  }
 
-    public boolean arrayFlows();
+  void checkValid();
 
-    public boolean typeCheck();
+  boolean trackImplicitFlows();
 
-    public boolean onTheFlyCallGraph();
+  boolean handleMaps();
 
-    public boolean throwFlows();
+  enum StaticFieldStrategy {
+    FLOW_SENSITIVE,
+    SINGLETON,
+    IGNORE
+  }
 
-    public boolean callSummaries();
+  StaticFieldStrategy getStaticFieldStrategy();
 
-    public boolean fieldSummaries();
+  enum ArrayStrategy {
+    DISABLED,
+    INDEX_SENSITIVE,
+    INDEX_INSENSITIVE
+  }
 
-    public int analysisTimeoutMS();
+  ArrayStrategy getArrayStrategy();
 
-    public boolean isAllocationVal(Value val);
+  boolean typeCheck();
 
-    public Optional<AllocVal> getAllocationVal(SootMethod m, Stmt stmt, Val fact,
-            ObservableICFG<Unit, SootMethod> icfg);
+  boolean onTheFlyCallGraph();
 
-    public boolean isIgnoredMethod(SootMethod method);
+  boolean throwFlows();
 
-    public IBoomerangStats statsFactory();
+  boolean callSummaries();
 
-    public boolean aliasing();
+  boolean fieldSummaries();
 
-    /**
-     * Assume we propagate an object of soot.NullType in variable y and the propagation reaches a statement x = (Object)
-     * y.
-     * 
-     * @return If set to true, the propagation will NOT continue in x. This does not match the runtime semantics. At
-     *         runtime, null can be cast to any RefType! Though a check (null instanceof Object) returns false.
-     */
-    public boolean killNullAtCast();
+  int analysisTimeoutMS();
 
-    boolean trackReturnOfInstanceOf();
+  // TODO remove icfg here.
+  Optional<AllocVal> getAllocationVal(
+      Method m, Statement stmt, Val fact, ObservableICFG<Statement, Method> icfg);
 
-    boolean trackStaticFieldAtEntryPointToClinit();
+  IBoomerangStats statsFactory();
 
-    boolean trackFields();
+  boolean aliasing();
+
+  /**
+   * Assume we propagate an object of soot.NullType in variable y and the propagation reaches a
+   * statement x = (Object) y.
+   *
+   * @return If set to true, the propagation will NOT continue in x. This does not match the runtime
+   *     semantics. At runtime, null can be cast to any RefType! Though a check (null instanceof
+   *     Object) returns false.
+   */
+  boolean killNullAtCast();
+
+  boolean trackReturnOfInstanceOf();
+
+  boolean trackStaticFieldAtEntryPointToClinit();
+
+  boolean trackFields();
+
+  int maxFieldDepth();
+
+  int maxCallDepth();
+
+  int maxUnbalancedCallDepth();
+
+  boolean onTheFlyControlFlow();
+
+  boolean ignoreInnerClassFields();
+
+  boolean trackPathConditions();
+
+  boolean prunePathConditions();
+
+  boolean trackDataFlowPath();
+
+  boolean allowMultipleQueries();
 }
